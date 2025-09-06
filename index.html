@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoFinds - Sustainable Marketplace</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        /* Neubrutalism Theme */
+        :root {
+            --primary: #00ff00;
+            --secondary: #ff00ff;
+            --dark: #1a1a1a;
+        }
+        
+        .neu-shadow {
+            box-shadow: 5px 5px 0px #000000;
+            border: 3px solid #000000;
+        }
+
+        .neu-button {
+            background: var(--primary);
+            padding: 10px 20px;
+            border: 3px solid #000000;
+            box-shadow: 5px 5px 0px #000000;
+            transition: all 0.2s;
+        }
+
+        .neu-button:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 7px 7px 0px #000000;
+        }
+
+        .neu-input {
+            border: 3px solid #000000;
+            padding: 10px;
+            background: white;
+            box-shadow: 3px 3px 0px #000000;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div id="app">
+        <!-- Navigation -->
+        <nav class="bg-white neu-shadow p-4 mb-8">
+            <div class="container mx-auto flex justify-between items-center">
+                <h1 class="text-2xl font-bold">EcoFinds</h1>
+                <div class="flex gap-4">
+                    <button onclick="showScreen('dashboard')" class="neu-button">Dashboard</button>
+                    <button onclick="showScreen('login')" id="authButton" class="neu-button">Login</button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Login/Register Screen -->
+        <div id="loginScreen" class="container mx-auto p-4">
+            <div class="max-w-md mx-auto bg-white p-8 neu-shadow">
+                <h2 class="text-2xl font-bold mb-6">Login</h2>
+                <form id="loginForm" class="space-y-4">
+                    <input type="email" placeholder="Email" class="w-full neu-input" required>
+                    <input type="password" placeholder="Password" class="w-full neu-input" required>
+                    <button type="submit" class="w-full neu-button">Login</button>
+                </form>
+                <p class="mt-4 text-center">
+                    Don't have an account? 
+                    <button onclick="toggleAuth()" class="text-blue-600 underline">Register</button>
+                </p>
+            </div>
+        </div>
+
+        <!-- Product Listing Feed -->
+        <div id="feedScreen" class="container mx-auto p-4 hidden">
+            <div class="flex gap-4 mb-8">
+                <input type="text" placeholder="Search products..." class="flex-1 neu-input">
+                <select class="neu-input">
+                    <option>All Categories</option>
+                    <option>Electronics</option>
+                    <option>Furniture</option>
+                    <option>Clothing</option>
+                </select>
+                <button onclick="showScreen('addProduct')" class="neu-button">+ Add Product</button>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="productGrid">
+                <!-- Product cards will be dynamically inserted here -->
+            </div>
+        </div>
+
+        <!-- Add Product Screen -->
+        <div id="addProductScreen" class="container mx-auto p-4 hidden">
+            <div class="max-w-md mx-auto bg-white p-8 neu-shadow">
+                <h2 class="text-2xl font-bold mb-6">Add New Product</h2>
+                <form id="addProductForm" class="space-y-4">
+                    <input type="text" placeholder="Product Title" class="w-full neu-input" required>
+                    <select class="w-full neu-input" required>
+                        <option>Select Category</option>
+                        <option>Electronics</option>
+                        <option>Furniture</option>
+                        <option>Clothing</option>
+                    </select>
+                    <textarea placeholder="Description" class="w-full neu-input" rows="4" required></textarea>
+                    <input type="number" placeholder="Price" class="w-full neu-input" required>
+                    <button type="button" class="w-full neu-button">+ Add Image</button>
+                    <button type="submit" class="w-full neu-button">Submit Listing</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Cart Screen -->
+        <div id="cartScreen" class="container mx-auto p-4 hidden">
+            <h2 class="text-2xl font-bold mb-6">Shopping Cart</h2>
+            <div id="cartItems" class="space-y-4">
+                <!-- Cart items will be dynamically inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample data
+        let currentUser = null;
+        let products = [];
+        let cart = [];
+
+        // Screen management
+        function showScreen(screenId) {
+            document.querySelectorAll('#app > div').forEach(screen => {
+                screen.classList.add('hidden');
+            });
+            document.getElementById(screenId + 'Screen').classList.remove('hidden');
+        }
+
+        // Auth toggle
+        function toggleAuth() {
+            const form = document.getElementById('loginForm');
+            const title = form.previousElementSibling;
+            if (title.textContent === 'Login') {
+                title.textContent = 'Register';
+                form.querySelector('button').textContent = 'Register';
+            } else {
+                title.textContent = 'Login';
+                form.querySelector('button').textContent = 'Login';
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            showScreen('login');
+        });
+    </script>
+<script>document.body.addEventListener('wheel', e => { if (!e.ctrlKey) return; e.preventDefault(); return }, { passive: false })</script>
+	</body>
+</html>
